@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "cc5359b2-2349-4cd3-acd9-51cf99c7579a",
+    "colId": "3a9a1a2c-1a07-4b4a-b9fe-12f641a073f4",
+    "containerId": "",
+    "name": "Get ads",
+    "url": "{{base}}ads",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2022-09-11T23:12:57.908Z",
+    "modified": "2022-09-11T23:14:07.109Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]

@@ -5,11 +5,19 @@
     "default": true,
     "sortNum": 10000,
     "created": "2022-09-11T23:13:29.435Z",
-    "modified": "2022-09-11T23:13:54.421Z",
+    "modified": "2022-09-14T07:38:08.250Z",
     "data": [
       {
         "name": "base",
-        "value": "http://localhost:3333/"
+        "value": "http://localhost:3333"
+      },
+      {
+        "name": "gameId",
+        "value": "ff36947a-d3ba-4451-b052-5a10609b9aad"
+      },
+      {
+        "name": "adId",
+        "value": "bfddbaf1-905b-4073-a0a6-a8070d602969"
       }
     ]
   }

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { useEffect, useState } from "react";
 import { Image, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,6 +9,7 @@ import { Entypo } from "@expo/vector-icons";
 import { Background } from "../../components/Background";
 import { Heading } from "../../components/Heading";
 import { DuoCard, DuoCardProps } from "../../components/DuoCard";
+import { DuoMatch } from "../../components/DuoMatch";
 
 import logoImg from "../../assets/logo-nlw-esports.png";
 import { THEME } from "../../theme";
@@ -21,15 +24,22 @@ export function Game() {
   const game = route.params as GameParams;
 
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
+  const [discordDuoSelected, setDiscordDuoSelected] = useState("");
 
   useEffect(() => {
-    fetch(`http://192.168.0.22:3333/games/${game.id}/ads`)
-      .then((response) => response.json())
-      .then((data) => setDuos(data));
+    axios(`http://192.168.0.22:3333/games/${game.id}/ads`).then((response) =>
+      setDuos(response.data)
+    );
   }, []);
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  async function getDiscordUser(adsId: string) {
+    axios(`http://192.168.0.22:3333/ads/${adsId}/discord`).then((response) =>
+      setDiscordDuoSelected(response.data.discord)
+    );
   }
 
   return (
@@ -61,7 +71,7 @@ export function Game() {
           data={duos}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DuoCard data={item} onConnect={() => {}} />
+            <DuoCard data={item} onConnect={() => getDiscordUser(item.id)} />
           )}
           horizontal
           style={styles.containerList}
@@ -74,6 +84,12 @@ export function Game() {
               Não há anúncios publicados ainda.
             </Text>
           )}
+        />
+
+        <DuoMatch
+          visible={Boolean(discordDuoSelected.length)}
+          discord={discordDuoSelected}
+          onClose={() => setDiscordDuoSelected("")}
         />
       </SafeAreaView>
     </Background>

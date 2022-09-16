@@ -8,7 +8,9 @@ export function Input({ label, id, ...rest }: InputProps) {
   if (label) {
     return (
       <div className="flex flex-col gap-2">
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id} className="font-semibold">
+          {label}
+        </label>
         <input
           {...rest}
           className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500"

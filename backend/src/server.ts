@@ -3,7 +3,7 @@ import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 
 import { convertHourStringToMinutes } from "./utils/convert-hour-string-to-minutes";
-import { convertMinutesToHourString } from "./utils/conver-minutes-to-hour-string";
+import { convertMinutesToHourString } from "./utils/convert-minutes-to-hour-string";
 
 const app = express();
 const prisma = new PrismaClient();

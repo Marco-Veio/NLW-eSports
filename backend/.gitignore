@@ -25,3 +25,6 @@ dist-ssr
 .history
 thunder-tests/thunderActivity.json
 .env
+*.sqlite
+*.sqlite-journal
+/tests/coverage

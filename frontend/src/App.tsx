@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Root as Modal } from "@radix-ui/react-dialog";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useKeenSlider } from "keen-slider/react";
 
 import { GameBanner } from "./components/GameBanner";
 import { CreateAdBanner } from "./components/CreateAdBanner";
@@ -9,7 +9,7 @@ import { CreateAdModal } from "./components/CreateAdModal";
 import logoImg from "./assets/logo.svg";
 
 import "./styles/main.css";
-import "swiper/css";
+import "keen-slider/keen-slider.min.css";
 
 import axios from "axios";
 
@@ -19,11 +19,60 @@ function App() {
   const [games, setGames] = useState<Game[]>([]);
   const [id, setId] = useState("");
 
+  const sliderOptions = {
+    loop: true,
+    breakpoints: {
+      "(max-width: 400px)": {
+        slides: {
+          perView: 1,
+          spacing: 6,
+        },
+      },
+      "(min-width: 400px)": {
+        slides: {
+          perView: 2,
+          spacing: 6,
+        },
+      },
+      "(min-width: 685px)": {
+        slides: {
+          perView: 3.3,
+          spacing: 6,
+        },
+      },
+      "(min-width: 970px)": {
+        slides: {
+          perView: 4.3,
+          spacing: 6,
+        },
+      },
+      "(min-width: 1255px)": {
+        slides: {
+          perView: 5.3,
+          spacing: 6,
+        },
+      },
+      "(min-width: 1550px)": {
+        slides: {
+          perView: 6.3,
+          spacing: 6,
+        },
+      },
+    },
+  };
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(sliderOptions);
+
   useEffect(() => {
     axios("http://localhost:3333/games").then((response) => {
       setGames(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    instanceRef.current?.update({
+      ...sliderOptions,
+    });
+  }, [instanceRef, sliderOptions]);
 
   return (
     <div className="max-w-[1344px] mx-auto flex flex-col items-center min-h-full">
@@ -38,33 +87,20 @@ function App() {
       </h1>
 
       <Modal>
-        <Swiper
-          className="mt-10 w-full"
-          spaceBetween={6}
-          slidesPerView={1}
-          breakpoints={{
-            1550: { slidesPerView: 6 },
-            1255: { slidesPerView: 5 },
-            970: { slidesPerView: 4 },
-            685: { slidesPerView: 3 },
-            400: { slidesPerView: 2 },
-          }}
-          initialSlide={0}
-        >
-          {games.map((game) => (
-            <SwiperSlide
-              key={game.id}
-              className="w-[292px] h-[219px] flex justify-center"
-            >
+        <div ref={sliderRef} className="keen-slider mt-10">
+          {games.map((game, index) => {
+            return (
               <GameBanner
-                title={game.title}
+                key={game.id}
+                className={`keen-slider__slide number-slide${index} flex justify-center`}
                 bannerUrl={game.bannerUrl}
+                title={game.title}
                 adsCount={game._count.ads}
                 onClick={() => setId(game.id)}
               />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            );
+          })}
+        </div>
 
         <CreateAdBanner onClick={() => setId("")} />
 

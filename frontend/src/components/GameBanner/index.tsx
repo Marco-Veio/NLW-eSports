@@ -11,7 +11,7 @@ interface GameBannerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function GameBanner(props: GameBannerProps) {
   return (
-    <Trigger onClick={props.onClick}>
+    <Trigger onClick={props.onClick} className={props.className}>
       <img
         src={props.bannerUrl}
         alt={props.title}

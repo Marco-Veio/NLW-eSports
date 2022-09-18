@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 app.use(express.json());
 app.use(cors());
 
-app.get("/games", async (request, response) => {
+app.get("/games", async (_request, response) => {
   const games = await prisma.game.findMany({
     include: {
       _count: {
@@ -19,6 +19,9 @@ app.get("/games", async (request, response) => {
           ads: true,
         },
       },
+    },
+    orderBy: {
+      title: "asc",
     },
   });
 

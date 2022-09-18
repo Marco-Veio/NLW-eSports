@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { useEffect, useState } from "react";
 import { Check, GameController, CaretDown } from "phosphor-react";
 import { Close, Content, Title, Overlay, Portal } from "@radix-ui/react-dialog";
@@ -14,7 +12,6 @@ import {
   ScrollUpButton,
   ScrollDownButton,
   SelectItemText,
-  SelectItemIndicator,
 } from "@radix-ui/react-select";
 import { Root as Checkbox, Indicator } from "@radix-ui/react-checkbox";
 import {
@@ -24,13 +21,19 @@ import {
 
 import { Input } from "../../components/Input";
 
+import axios from "axios";
+
 import { Game } from "../../interfaces/game";
 
-export function CreateAdModal() {
+interface Props {
+  game?: string;
+  onChange?: (game: string) => void;
+}
+
+export function CreateAdModal({ game, onChange }: Props) {
   const [games, setGames] = useState<Game[]>([]);
   const [weekDays, setWeekDays] = useState<string[]>([]);
   const [useVoiceChannel, setUseVoiceChannel] = useState<boolean>(false);
-  const [game, setGame] = useState("");
 
   useEffect(() => {
     axios("http://localhost:3333/games").then((response) => {
@@ -74,7 +77,7 @@ export function CreateAdModal() {
 
   return (
     <Portal>
-      <Overlay className="bg-black/60 inset-0 fixed">
+      <Overlay className="bg-black/60 inset-0 fixed z-40">
         <Content className="fixed bg-[#2A2634] py-8 px-10 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[480px] shadow-lg shadow-black/25">
           <Title className="text-3xl font-black">Publique um anúncio</Title>
 
@@ -84,7 +87,7 @@ export function CreateAdModal() {
                 Qual o game?
               </label>
 
-              <Select defaultValue={game}>
+              <Select value={game} onValueChange={onChange}>
                 <SelectTrigger
                   className={`py-3 px-4 rounded text-sm bg-zinc-900 flex justify-between align-center ${
                     game === "" && "text-zinc-500"
@@ -95,7 +98,7 @@ export function CreateAdModal() {
                 </SelectTrigger>
 
                 <SelectPortal>
-                  <SelectContent className="bg-zinc-700 py-1 text-white font-medium">
+                  <SelectContent className="bg-zinc-700 py-1 text-white font-medium z-50">
                     <ScrollUpButton />
 
                     <SelectViewport>
@@ -108,7 +111,6 @@ export function CreateAdModal() {
                         <SelectItem
                           key={game.id}
                           value={game.id}
-                          onSelect={() => setGame(game.id)}
                           className="px-4 cursor-default hover:bg-zinc-600 focus:bg-zinc-600"
                         >
                           <SelectItemText>{game.title}</SelectItemText>

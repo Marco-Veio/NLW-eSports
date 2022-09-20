@@ -8,7 +8,7 @@
     "dev": "tsnd --exit-child src/server.ts",
     "migrate": "prisma migrate reset",
     "pretest": "DATABASE_URL=file:../src/database/test.sqlite prisma migrate reset",
-    "test": "DATABASE_URL=file:../src/database/test.sqlite jest; "
+    "test": "DATABASE_URL=file:../src/database/test.sqlite jest --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^29.0.3",
+    "@types/supertest": "^2.0.12",
     "jest": "^29.0.3",
     "prisma": "^4.3.1",
     "supertest": "^6.2.4",
